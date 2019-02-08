@@ -7,7 +7,6 @@ public class Unit {
     public int posY;
 
 
-
     //set the default unit to empty and unoccupied,set position when declared and will not change
     public Unit(int x, int y){
         status = false;
@@ -19,6 +18,7 @@ public class Unit {
         return status;
     }
 
+    //change the status of the unit from unoccupied to occupied or vice versa
     public void changeStatus(){
         status = !status;
     }

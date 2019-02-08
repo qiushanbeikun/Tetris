@@ -1,14 +1,14 @@
-import elements.Unit;
+package elements;
 
 import java.util.ArrayList;
 
 public class Canvas {
-    ArrayList<ArrayList<Unit>> canvas = new ArrayList<>();
+    public ArrayList<ArrayList<Unit>> canvas = new ArrayList<>();
 
     //initialize the canvas with 10 units width and 20 units height
     public Canvas(){
         for (int i = 1; i <= 20; i++) {
-            ArrayList line = new ArrayList<>();
+            ArrayList<Unit> line = new ArrayList<>();
             canvas.add(line);
             for (int j = 1; j <= 10; j++) {
                 Unit unit = new Unit(j,i);

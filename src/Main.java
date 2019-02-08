@@ -1,3 +1,5 @@
+import elements.Canvas;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,7 +32,7 @@ public class Main {
 
     //initialize the game, create a canvas, add all
     public void initialGame(){
-        Canvas battleFiled = new Canvas();
+        elements.Canvas battleFiled = new Canvas();
     }
 
 }

@@ -1,5 +1,7 @@
 package elements;
 
+import Exceptions.illegalOperationException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,6 +11,15 @@ public class Block {
     private int numberOfX;
     private int type;
     private int status ;
+
+/*    private Unit s11 = new Unit(5,1);
+    private Unit s12 = new Unit(6,1);
+    private Unit s13 = new Unit(6,2);
+    private Unit s14 = new Unit(7,3);
+    private Unit s15 = new Unit(5,2);
+    private Unit s16 = new Unit(5,3);
+    private Unit s17 = new Unit(6,3);
+    private Unit s18 = new Unit(7,1);*/
 
 
 
@@ -41,6 +52,11 @@ public class Block {
 
     // an array list of 8 integers to represent the block, that is the four coordinates
     private ArrayList<Integer> fourUnits;
+    
+    // the canvas that this Block is on
+    // this will make a bi-directional relationship
+    private Canvas canvas;
+    
 
     // type type
     // 1        S
@@ -63,6 +79,7 @@ public class Block {
             fourUnits = oBlockS1;
         }
         this.type = type;
+        this.canvas = canvas;
     }
 
     // move the block down by oen unit, increase the value of Y coordinate by 1
@@ -96,14 +113,18 @@ public class Block {
         }
     }
 
-    // drop the block directly to bottom
-    public void dropBottom(){
+    public void changeCatch(){
+        try {
+            changeBlockStatus();
+        } catch (illegalOperationException e) {
+            e.printStackTrace();
 
+        }
     }
 
-    // rotate the block
+    // rotate the block if the up button is pressed
     // change the block to the next status of the four
-    public void changeBlockStatus(){
+    public void changeBlockStatus() throws illegalOperationException {
         if (type == 1){
             if (status%4 == 1){
                 fourUnits = updatePosition(sBlockS2);
@@ -154,24 +175,57 @@ public class Block {
         status++;
     }
 
-    // update the block from the formal status to now, system should block the movement if there is not enough space to finish the order
-    public ArrayList<Integer> updatePosition(ArrayList<Integer> block){
+    // update the array from the formal status to now, system should array the movement if there is not enough space to finish the order
+    public ArrayList<Integer> updatePosition(ArrayList<Integer> array) throws illegalOperationException {
+        Block temp = new Block(this.canvas, this.type);
+
         for (int i = 0; i < 8; i++) {
             if (i%2 == 0){
-                block.set(i, block.get(i)+numberOfX);
+                temp.fourUnits.set(i, array.get(i)+numberOfX);
             }else{// i%2 !=0
-                block.set(i, block.get(i)+numberOfY);
+                temp.fourUnits.set(i, array.get(i)+numberOfY);
             }
         }
-        return block;
+        if (passport(temp,this.canvas.sediments)){
+            return temp.fourUnits;
+        }else{
+            throw new illegalOperationException("This is an illegal operation");
+        }
+    }
+
+
+    // drop the block directly to bottom
+    // requires the block target is available (do not overlap with the sediments)
+    public void dropBottom(Block target, Sediments sediments){
+        if (target.passport(target, sediments)){
+            mergeBlock(target, sediments);
+        }
+        mergeBlock(target, sediments);
     }
 
 
     // the block should merge to the segment when it reaches the furthest position it can go
-    public void mergeBlock(){
-
+    public void mergeBlock(Block block, Sediments sediments){
+        for (int i = 0; i < 8; i = i+2) {
+            sediments.addUnit(block.fourUnits.get(i),block.fourUnits.get(i+1));
+        }
     }
 
+    public boolean passport(Block block, Sediments sediments){
+        for (int i = 0; i < 8; i=i+2) {
+            if (sediments.containThisUnit(block.fourUnits.get(i), block.fourUnits.get(i+1))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // allocate the position of the
+    public void allocateBlock(Canvas canvas, Block block){
+        for (int i = 0; i < 8; i=i+2) {
+            canvas.location(block.fourUnits.get(i), block.fourUnits.get(i+1)).changeStatus();
+        }
+    }
 
 
 }

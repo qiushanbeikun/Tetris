@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Canvas {
     public ArrayList<ArrayList<Unit>> canvas = new ArrayList<>();
+    Sediments sediments;
 
     //initialize the canvas with 10 units width and 20 units height
     public Canvas(){
@@ -16,6 +17,7 @@ public class Canvas {
                 unit.getPos();
             }
         }
+        sediments = new Sediments();
     }
 
     // locate the unit with the given coordinate

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Main {
+
+    private static final int AUTO_BOT_SPEED = 10;
     private JFrame frame;
     private final int LENGTH = 30;
 
@@ -27,12 +29,13 @@ public class Main {
         frame.setResizable(false);
         /////
         frame.setVisible(true);*/
-        initialGame();
+        gameRunner();
     }
 
     //initialize the game, create a canvas, add all
-    public void initialGame(){
+    public void gameRunner(){
         elements.Canvas battleFiled = new Canvas();
+
     }
 
 }

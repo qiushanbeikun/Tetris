@@ -220,6 +220,7 @@ public class Block {
         return true;
     }
 
+    
     // allocate the position of the
     public void allocateBlock(Canvas canvas, Block block){
         for (int i = 0; i < 8; i=i+2) {

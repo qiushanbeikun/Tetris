@@ -1,5 +1,6 @@
 package elements;
 
+import Exceptions.gameOverException;
 import Exceptions.illegalOperationException;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class Block {
 
 
     // an array list of 8 integers to represent the block, that is the four coordinates
-    private ArrayList<Integer> fourUnits;
+    public ArrayList<Integer> fourUnits;
     
     // the canvas that this Block is on
     // this will make a bi-directional relationship
@@ -66,20 +67,31 @@ public class Block {
     // 6        O
     // initialize the block waiting to drop or begin to drop,
     // type is random (not doing here), statues is also 1(default)
-    public Block(Canvas canvas, int type){
+    public Block(Canvas canvas, int type) throws gameOverException {
+        this.canvas = canvas;
+        tryToInstanciateABlock(type);
+    }
+
+    public void tryToInstanciateABlock(int type) throws gameOverException {
+        ArrayList<Integer> temp;
         if (type == 1){
-            fourUnits = sBlockS1;
+            temp = sBlockS1;
         }else if (type == 2){
-            fourUnits = lBlockS1;
+            temp = lBlockS1;
         }else if (type == 3){
-            fourUnits = tBlockS1;
+            temp = tBlockS1;
         }else if (type == 4){
-            fourUnits = iBlockS1;
+            temp = iBlockS1;
         }else{
-            fourUnits = oBlockS1;
+            temp = oBlockS1;
+        }
+
+        if (passport(temp, this.canvas.sediments)){
+            fourUnits = temp;
+        }else{
+            throw new gameOverException("Your game is over!");
         }
         this.type = type;
-        this.canvas = canvas;
     }
 
     // move the block down by oen unit, increase the value of Y coordinate by 1
@@ -117,9 +129,9 @@ public class Block {
         try {
             changeBlockStatus();
         } catch (illegalOperationException e) {
-            e.printStackTrace();
-
+            System.out.println("Illegal operation");
         }
+
     }
 
     // rotate the block if the up button is pressed
@@ -177,17 +189,16 @@ public class Block {
 
     // update the array from the formal status to now, system should array the movement if there is not enough space to finish the order
     public ArrayList<Integer> updatePosition(ArrayList<Integer> array) throws illegalOperationException {
-        Block temp = new Block(this.canvas, this.type);
-
+        ArrayList<Integer> temp = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             if (i%2 == 0){
-                temp.fourUnits.set(i, array.get(i)+numberOfX);
+                temp.set(i, array.get(i)+numberOfX);
             }else{// i%2 !=0
-                temp.fourUnits.set(i, array.get(i)+numberOfY);
+                temp.set(i, array.get(i)+numberOfY);
             }
         }
         if (passport(temp,this.canvas.sediments)){
-            return temp.fourUnits;
+            return temp;
         }else{
             throw new illegalOperationException("This is an illegal operation");
         }
@@ -196,8 +207,9 @@ public class Block {
 
     // drop the block directly to bottom
     // requires the block target is available (do not overlap with the sediments)
+    // &&&&& beta &&&&&
     public void dropBottom(Block target, Sediments sediments){
-        if (target.passport(target, sediments)){
+        if (target.passport(target.fourUnits, sediments)){
             mergeBlock(target, sediments);
         }
         mergeBlock(target, sediments);
@@ -211,22 +223,19 @@ public class Block {
         }
     }
 
-    public boolean passport(Block block, Sediments sediments){
+    public boolean passport(ArrayList<Integer> array, Sediments sediments){
         for (int i = 0; i < 8; i=i+2) {
-            if (sediments.containThisUnit(block.fourUnits.get(i), block.fourUnits.get(i+1))){
+            if (sediments.containThisUnit(array.get(i), array.get(i+1))){
                 return false;
             }
         }
         return true;
     }
 
-    
-    // allocate the position of the
-    public void allocateBlock(Canvas canvas, Block block){
-        for (int i = 0; i < 8; i=i+2) {
-            canvas.location(block.fourUnits.get(i), block.fourUnits.get(i+1)).changeStatus();
-        }
-    }
+
+
+
+
 
 
 }

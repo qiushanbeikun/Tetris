@@ -23,11 +23,13 @@ public class Unit {
         status = !status;
     }
 
-    public void getPos(){
-        System.out.println("("+posX+","+posY+")");
+    public void printPos(){
+        System.out.print("("+posX+","+posY+")");
     }
 
-
+    public void printStatus(){
+        System.out.print(this.status);
+    }
 
 
 }

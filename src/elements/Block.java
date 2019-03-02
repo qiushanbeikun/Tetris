@@ -13,18 +13,7 @@ public class Block {
     private int type;
     private int status ;
 
-/*    private Unit s11 = new Unit(5,1);
-    private Unit s12 = new Unit(6,1);
-    private Unit s13 = new Unit(6,2);
-    private Unit s14 = new Unit(7,3);
-    private Unit s15 = new Unit(5,2);
-    private Unit s16 = new Unit(5,3);
-    private Unit s17 = new Unit(6,3);
-    private Unit s18 = new Unit(7,1);*/
-
-
-
-    private ArrayList<Integer> sBlockS1 = new ArrayList<>(Arrays.asList(5, 1, 6, 1, 6, 2, 7, 3));
+    private ArrayList<Integer> sBlockS1 = new ArrayList<>(Arrays.asList(5, 1, 6, 1, 6, 2, 6, 3));
     private ArrayList<Integer> sBlockS2 = new ArrayList<>(Arrays.asList(6, 1, 5, 2, 6, 2, 5, 3));
     private ArrayList<Integer> sBlockS3 = new ArrayList<>(Arrays.asList(5,1,5,2,6,2,6,3));
     private ArrayList<Integer> sBlockS4 = new ArrayList<>(Arrays.asList(6,1,7,1,5,2,6,2));
@@ -223,13 +212,27 @@ public class Block {
         }
     }
 
+    // determine whether this operation to the block is legal
+    // - the block will not move out of the boarder
+    // - the block will not run into sediment contents
     public boolean passport(ArrayList<Integer> array, Sediments sediments){
+        for (int i = 0; i < 8; i++) {
+            if (array.get(i)<=0){
+                return false;
+            }
+        }
         for (int i = 0; i < 8; i=i+2) {
             if (sediments.containThisUnit(array.get(i), array.get(i+1))){
                 return false;
             }
         }
         return true;
+    }
+
+    public void printBlockInfo(){
+        for (int i: fourUnits){
+            System.out.println(i);
+        }
     }
 
 

@@ -47,25 +47,31 @@ public class Main {
     public void gameRunner(){
         gameIsOn = true;
         battleField = new Canvas();
+        battleField.printStatus();
 
         while(gameIsOn){
-            battleField.printStatus();
+
             Random ran = new Random();
-            int x = ran.nextInt(4);
+            int x = ran.nextInt(5);
             try {
                 block = new Block(battleField, x);
+                //block.printBlockInfo();
+                blockOperationProcess();
+                block.mergeBlock(block, battleField.sediments);
+                battleField.allocateSedimnts(battleField,battleField.sediments);
+                battleField.printStatus();
             } catch (gameOverException e) {
                 gameIsOn = false;
                 gameOverProcess();
             }
-
-            block.mergeBlock(block, battleField.sediments);
-            battleField.allocateSedimnts(battleField,battleField.sediments);
-
         }
     }
 
     public void gameOverProcess(){
+        System.out.println("Game over!");
+    }
+
+    public void blockOperationProcess(){
 
     }
 

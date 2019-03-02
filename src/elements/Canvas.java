@@ -23,7 +23,7 @@ public class Canvas {
 
     // locate the unit with the given coordinate
     public Unit location(int x, int y){
-        return canvas.get(y).get(x);
+        return canvas.get(y-1).get(x-1);
     }
 
     public void printStatus(){
@@ -39,7 +39,7 @@ public class Canvas {
 
     }
 
-    // allocate the position of the
+    // allocate the position of the block
     public void allocateBlock(Canvas canvas, Block block){
         for (int i = 0; i < 8; i=i+2) {
             canvas.location(block.fourUnits.get(i), block.fourUnits.get(i+1)).changeStatus();
@@ -48,7 +48,7 @@ public class Canvas {
 
     //assume the size of the array list must be even.
     public void allocateSedimnts(Canvas canvas, Sediments sediments){
-        for (int i = 0; i < sediments.contents.size()/2; i=i+2) {
+        for (int i = 0; i < sediments.contents.size(); i=i+2) {
             canvas.location(sediments.contents.get(i), sediments.contents.get(i+1)).changeStatus();
         }
     }

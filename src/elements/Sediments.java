@@ -1,6 +1,5 @@
 package elements;
 
-
 import java.util.ArrayList;
 
 // segments is the blocks on the bottom of the game
